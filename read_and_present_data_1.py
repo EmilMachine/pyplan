@@ -5,15 +5,14 @@ Created on Sat Jul  4 09:46:28 2015
 @author: emil
 """
 
-import cPickle as pickle
+import pickle as pickle
 
 def intersect(t1,t2):
     return(list(set(t1) & set(t2)))
 
-def 
 
 def task_possible(tasks):
-    pos_tasks = []    
+    pos_tasks = []
     for actor_list in tasks:
         if not actor_list: #not actor_list = list is empty
             pos_tasks.append([])
@@ -28,7 +27,7 @@ def task_possible(tasks):
     return pos_tasks
 
 #class note:
-#    def 
+#    def
 
 
 ## === Old Falied recursive list ==
@@ -37,7 +36,7 @@ def task_combi(master,tmp,combi_list,pos_list):
             # base case
             return tmp
         else:
-            # build stuff            
+            # build stuff
             for t in combi_list:
                 tmp.append(t)
                 combi_list = intersect(combi_list,pos_list[t])
@@ -50,7 +49,7 @@ def get_all_list(pos_list):
     master = []
     for i,t1 in enumerate(pos_list):
         tmp = [i]
-        next_master = task_combi([],tmp,t1,pos_list)        
+        next_master = task_combi([],tmp,t1,pos_list)
         # TODO make nested list merge that exclude dublicates
         master += next_master
 
@@ -59,12 +58,12 @@ def get_all_list(pos_list):
 # === MAIN ===
 
 with open('test_data/fysrevy_data.pkl', "rb") as input_file:
-    in_data = pickle.load(input_file)    
+    in_data = pickle.load(input_file)
 
 # in_data is a dict with
 # 'actors':actors,
-# 'actors_name':actors_name, 
-# 'tasks':tasks, 
+# 'actors_name':actors_name,
+# 'tasks':tasks,
 # 'tasks_name':tasks_name
 
 tasks = in_data['tasks']
@@ -74,10 +73,10 @@ pos_tasks = task_possible(tasks)
 g = get_all_list(pos_tasks)
 
 
-    
-    
 
-        
-    
-    
- 
+
+
+
+
+
+
