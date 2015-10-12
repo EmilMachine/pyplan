@@ -31,18 +31,6 @@ def task_possible(tasks):
     return pos_tasks
 
 
-def get_all_possible_combi(possible_cotasks):
-
-    master = []
-    # initiate recursion
-    for i,tmp_cotasks in enumerate(possible_cotasks):
-        tmp_tasks = [i]
-        # do recursion for one
-        # master is changed within the function.
-        master = get_one_possible_combi(i,possible_cotasks,tmp_tasks,tmp_cotasks,master)
-
-    return master
-
 # Function is recursive.
 # In most cases that would be slower than iterative versions.
 # It might also cause errors as python has default 1000 recursion limit.
@@ -75,6 +63,45 @@ def get_one_possible_combi(i,possible_cotasks,tmp_tasks,tmp_cotasks,master):
 
         return master
 
+def get_all_possible_combi(possible_cotasks):
+
+    master = []
+    # initiate recursion
+    for i,tmp_cotasks in enumerate(possible_cotasks):
+        tmp_tasks = [i]
+        # do recursion for one
+        # master is changed within the function.
+        master = get_one_possible_combi(i,possible_cotasks,tmp_tasks,tmp_cotasks,master)
+
+    return master
+
+
+def get_task_lookup(task_lst, tasks_lst_of_lst):
+    # lst = list.
+    # taskes a list of tasks_list and make a lookup table
+    # the lookuptable can be used to enter a task id, and get the ids of the list of lists, where the task is in.
+    n_tasks = len(task_lst)
+
+    task_combi_lookup = []
+
+    # TODO can maybe be rewritten to list comprehention
+    # loop over tasks (we assumme all tasks are numbered from 1 to n)
+    for task in range(0,n_tasks):
+        tmp = []
+        # take a list of list (e.g. cotasks_master)
+        for entry_id,entry in enumerate(tasks_lst_of_lst):
+            # for each entry check if our task is one of them
+            # if it is add that entry id_number to our lookup table for that task.
+            if task in entry:
+                tmp.append(entry_id)
+        # After inner iteration inner lookup is complete.
+        # The lookup list is added to the list.
+        # (since we do them in order, the id of task and lookup will match)
+        task_combi_lookup.append(tmp)
+
+    return task_combi_lookup
+
+
 # === MAIN ===
 
 def main():
@@ -88,6 +115,7 @@ def main():
     # 'tasks_name':tasks_name
 
     tasks = in_data['tasks']
+    #print(tasks)
 
     pos_tasks = task_possible(tasks)
     # print(pos_tasks)
@@ -101,14 +129,19 @@ def main():
     master = []
 
     master = get_one_possible_combi(i,possible_cotasks,tmp_tasks,tmp_cotasks,master)
-    print(master)
 
 
     # try recursion for all
-    master = get_all_possible_combi(pos_tasks)
+    cotask_master = get_all_possible_combi(pos_tasks)
 
-    print(master)
-    print(len(master))
+    print(cotask_master)
+    print(len(cotask_master))
+
+    cotask_lookup = get_task_lookup(tasks,cotask_master)
+
+    for id_t, t in enumerate(tasks):
+        if t:
+            print(id_t,cotask_lookup[id_t])
 
 if __name__ == '__main__':
     main()
